@@ -127,9 +127,16 @@
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
+              var emitterRect=that.$.popoverEmitter.getBoundingClientRect();
               document.removeEventListener("click", windowClick, true);
               document.removeEventListener("keydown", windowKeyDown, true);
-              that.popper();
+              if(event.clientX<emitterRect.left
+                 || event.clientX>emitterRect.right
+                 || event.clientY<emitterRect.top
+                 || event.clientY>emitterRect.bottom)
+                 {
+                   that.popper();
+                 }
               }
 
           document.addEventListener('keydown', windowKeyDown, true);
