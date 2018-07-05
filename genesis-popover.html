@@ -1,0 +1,124 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="popperjs-import.html">
+<link rel="import" href="../vaadin-lumo-styles/vaadin-lumo-styles.html">
+
+<dom-module id="genesis-popover">
+
+  <template>
+
+    <style>
+      /* shadow DOM styles go here */
+
+      :host {
+        --genesis-popover-max-width:300px;
+        --genesis-popover-min-height:800px;
+        --genesis-popover-top-margin:15px;
+      }
+
+      .popper {
+        background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+        border-radius: var(--lumo-border-radius);
+        box-shadow: 0 0 0 1px var(--lumo-contrast-10pct), var(--lumo-box-shadow-l);
+        font-family: var(--lumo-font-family);
+        font-size: var(--lumo-font-size-m);
+        font-weight: 400;
+        line-height: var(--lumo-line-height-s);
+        letter-spacing: 0;
+        text-transform: none;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        padding: var(--lumo-space-wide-l);
+        max-width: var(--genesis-popover-max-width);
+        min-height: var(--genesis-popover-min-height);
+        z-index: 10000;
+      }
+
+      .popper[x-placement^="bottom"] {
+          margin-top: var(--genesis-popover-top-margin);
+      }
+
+      .popper-visible {
+        display: flex;
+      }
+
+      .popper-hidden {
+        display: none;
+      }
+
+    </style>
+
+    <!-- shadow DOM goes here -->
+
+
+       <span id="popoverEmitter" on-click="popper">
+         <slot></slot>
+       </span>
+
+      <div id="popoverContent" class$="[[popperClass]]">
+        <slot name="content">Default popover content</slot>
+      </div>
+
+  </template>
+
+  <script>
+    class GenesisPopover extends Polymer.Element {
+      static get is() {
+        return 'genesis-popover';
+      }
+      static get properties() {
+        return {
+          popperClass : {
+            type: String,
+            value: 'popper popper-hidden'
+          },
+          pressed: {
+            type: Boolean,
+            notify: true,
+            reflectToAttribute: true,
+            value: false
+          },
+          placement: {
+            type: String,
+            value: 'bottom',
+            reflectToAttribute: true
+          }
+        }
+      }
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      super.connectedCallback();
+      this.popperInstance = new Popper(
+          this.$.popoverEmitter,
+          this.$.popoverContent,
+          {
+            placement: this.placement,
+            modifiers: {
+              preventOverflow: {
+                boundariesElement: 'viewport',
+              },
+            },
+          }
+      );
+    }
+
+      popper() {
+        this.pressed = !this.pressed;
+        if (this.pressed) {
+          this.popperInstance.scheduleUpdate();
+          this.popperClass='popper popper-visible';
+        } else {
+          this.popperClass='popper popper-hidden';
+        }
+      }
+
+    }
+    customElements.define(GenesisPopover.is, GenesisPopover);
+  </script>
+
+</dom-module>
