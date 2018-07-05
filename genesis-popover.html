@@ -55,7 +55,7 @@
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]">
+      <div id="popoverContent" class$="[[popperClass]]" on-click="popper">
         <slot name="content"></slot>
       </div>
 
@@ -111,13 +111,23 @@
           this.popperInstance.scheduleUpdate();
           this.popperClass='popper popper-visible';
 
-          document.addEventListener("click", windowClick, true);
           var that=this;
+
+          document.addEventListener("click", windowClick, true);
           function windowClick(event) {
               document.removeEventListener("click", windowClick, true);
+              document.removeEventListener("keydown", windowKeyDown, true);
               that.popper();
               }
 
+          document.addEventListener('keydown', windowKeyDown, true);
+          function windowKeyDown(event) {
+              if(event.key==='Escape') {
+                document.removeEventListener("keydown", windowKeyDown, true);
+                document.removeEventListener("click", windowClick, true);
+                that.popper();
+              }
+          }
 
         } else {
           this.popperClass='popper popper-hidden';
