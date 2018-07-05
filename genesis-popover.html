@@ -1,7 +1,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="popperjs-import.html">
-<link rel="import" href="../vaadin-lumo-styles/vaadin-lumo-styles.html">
 
 <dom-module id="genesis-popover">
 
@@ -12,8 +11,9 @@
 
       :host {
         --genesis-popover-max-width:300px;
-        --genesis-popover-min-height:800px;
+        --genesis-popover-min-height:10px;
         --genesis-popover-top-margin:15px;
+        --genesis-popover-z-index:10000;
       }
 
       .popper {
@@ -33,7 +33,7 @@
         padding: var(--lumo-space-wide-l);
         max-width: var(--genesis-popover-max-width);
         min-height: var(--genesis-popover-min-height);
-        z-index: 10000;
+        z-index: var(--genesis-popover-z-index);
       }
 
       .popper[x-placement^="bottom"] {
@@ -51,14 +51,12 @@
     </style>
 
     <!-- shadow DOM goes here -->
-
-
        <span id="popoverEmitter" on-click="popper">
          <slot></slot>
        </span>
 
       <div id="popoverContent" class$="[[popperClass]]">
-        <slot name="content">Default popover content</slot>
+        <slot name="content"></slot>
       </div>
 
   </template>
