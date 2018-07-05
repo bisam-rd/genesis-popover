@@ -110,6 +110,15 @@
         if (this.pressed) {
           this.popperInstance.scheduleUpdate();
           this.popperClass='popper popper-visible';
+
+          document.addEventListener("click", windowClick, true);
+          var that=this;
+          function windowClick(event) {
+              document.removeEventListener("click", windowClick, true);
+              that.popper();
+              }
+
+
         } else {
           this.popperClass='popper popper-hidden';
         }
