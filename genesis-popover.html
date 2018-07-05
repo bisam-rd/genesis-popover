@@ -12,7 +12,7 @@
       :host {
         --genesis-popover-max-width:300px;
         --genesis-popover-min-height:10px;
-        --genesis-popover-top-margin:15px;
+        --genesis-popover-margin:15px;
         --genesis-popover-z-index:10000;
       }
 
@@ -37,7 +37,19 @@
       }
 
       .popper[x-placement^="bottom"] {
-          margin-top: var(--genesis-popover-top-margin);
+          margin-top: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="top"] {
+          margin-bottom: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="right"] {
+          margin-left: var(--genesis-popover-margin);
+      }
+
+      .popper[x-placement^="left"] {
+          margin-right: var(--genesis-popover-margin);
       }
 
       .popper-visible {
