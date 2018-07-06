@@ -16,6 +16,16 @@
         --genesis-popover-z-index:10000;
       }
 
+      /*:host #popoverContent {
+        display: none;
+      }
+
+      :host #popoverContent {
+        display: flex;
+      }*/
+
+
+
       .popper {
         background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
         border-radius: var(--lumo-border-radius);
@@ -63,11 +73,11 @@
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="popper">
+       <span id="popoverEmitter" on-click="togglePopper">
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]" on-click="popper">
+      <div id="popoverContent" class$="[[popperClass]]" on-click="togglePopper">
         <slot name="content"></slot>
       </div>
 
@@ -80,48 +90,78 @@
       }
       static get properties() {
         return {
-          popperClass : {
-            type: String,
-            value: 'popper popper-hidden'
-          },
           pressed: {
             type: Boolean,
-            notify: true,
             reflectToAttribute: true,
-            value: false
+            value: false,
+            observer: '_pressedChanged'
           },
           placement: {
             type: String,
             value: 'bottom',
             reflectToAttribute: true
+          },
+          popperClass: {
+            type: String,
+            value: 'popper popper-hidden'
           }
         }
       }
+
       constructor() {
         super();
       }
 
-      connectedCallback() {
-      super.connectedCallback();
-      this.popperInstance = new Popper(
-          this.$.popoverEmitter,
-          this.$.popoverContent,
-          {
-            placement: this.placement,
-            modifiers: {
-              preventOverflow: {
-                boundariesElement: 'viewport',
-              },
-            },
-          }
-      );
-    }
+      ready(){
+        super.ready();
+        this.popperInstance = new Popper(
+                this.$.popoverEmitter,
+                this.$.popoverContent,
+                {
+                  placement: this.placement,
+                  modifiers: {
+                    preventOverflow: {
+                      boundariesElement: 'viewport',
+                    },
+                  },
+                }
+            );
+        if(this.pressed) {
+          this.showPopper();
+        }
+      }
 
-      popper() {
+    _pressedChanged(newValue, oldValue) {
+      console.log(oldValue, newValue);
+        if(newValue && this.popperInstance!=null) {
+          this.showPopper();
+        } else {
+          this.popperClass="popper popper-hidden";
+        }
+      }
+    //   connectedCallback() {
+    //   super.connectedCallback();
+
+
+    // }
+
+
+
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //   super.attributeChangedCallback(name, oldValue, newValue);
+    //     if(name==='pressed' && this.popperInstance!=null && this.pressed)
+    //     {
+    //       // this.showPopper();
+    //     }
+    //   }
+
+      togglePopper() {
         this.pressed = !this.pressed;
-        if (this.pressed) {
-          this.popperInstance.scheduleUpdate();
-          this.popperClass='popper popper-visible';
+      }
+
+      showPopper(){
+        this.popperInstance.scheduleUpdate();
+        this.popperClass="popper popper-visible";
 
           var that=this;
 
@@ -135,7 +175,7 @@
                  || event.clientY<emitterRect.top
                  || event.clientY>emitterRect.bottom)
                  {
-                   that.popper();
+                   that.togglePopper();
                  }
               }
 
@@ -144,13 +184,9 @@
               if(event.key==='Escape') {
                 document.removeEventListener("keydown", windowKeyDown, true);
                 document.removeEventListener("click", windowClick, true);
-                that.popper();
+                that.togglePopper();
               }
           }
-
-        } else {
-          this.popperClass='popper popper-hidden';
-        }
       }
 
     }
