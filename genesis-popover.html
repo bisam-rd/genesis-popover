@@ -81,12 +81,12 @@
 
             static get properties() {
                 return {
-                    pressed: {
+                    visible: {
                         type: Boolean,
                         reflectToAttribute: true,
                         value: false,
                         notify: true,
-                        observer: '_pressedChanged'
+                        observer: '_visibleChanged'
                     },
                     placement: {
                         type: String,
@@ -119,12 +119,12 @@
                         },
                     }
                 );
-                if (this.pressed) {
+                if (this.visible) {
                     this.show();
                 }
             }
 
-            _pressedChanged(newValue, oldValue) {
+            _visibleChanged(newValue, oldValue) {
                 if (newValue && this.popperInstance != null) {
                     this.show();
                 } else {
@@ -161,9 +161,9 @@
             }
 
             onClickEmitter() {
-                if (!this.pressed && !this.manualShow) {
+                if (!this.visible && !this.manualShow) {
                     this.show();
-                } else if (this.pressed) {
+                } else if (this.visible) {
                     this.hide();
                 }
             }
@@ -171,7 +171,7 @@
             show() {
                 this.popperInstance.scheduleUpdate();
                 this.popperClass = "popper popper-visible";
-                this.pressed = true;
+                this.visible = true;
 
                 document.addEventListener("click", this._onClickOutside, true);
                 document.addEventListener("keydown", this._onEscape, true);
@@ -182,7 +182,11 @@
                 document.removeEventListener("keydown", this._onEscape, true);
 
                 this.popperClass = "popper popper-hidden";
-                this.pressed = false;
+                this.visible = false;
+            }
+
+            toggleVisibility() {
+                this.visible = !this.visible;
             }
         }
 
