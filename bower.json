@@ -1,7 +1,7 @@
 {
   "name": "genesis-popover",
-  "description": "brief description",
-  "homepage": "https://github.com/ymedaghri/genesis-popover.git",
+  "description": "Popover webcomponent for genesis",
+  "homepage": "https://github.com/bisam-rd/genesis-popover.git",
   "main": "genesis-popover.html",
   "license": "MIT",
   "ignore": [
