@@ -97,7 +97,7 @@
                         type: String,
                         value: 'popper popper-hidden',
                     },
-                    manualShow: {
+                    manualVisibility: {
                         type: Boolean,
                         reflectToAttribute: true,
                         value: false,
@@ -161,10 +161,13 @@
             }
 
             onClickEmitter() {
-                if (!this.visible && !this.manualShow) {
-                    this.show();
-                } else if (this.visible) {
+                if (this.manualVisibility) {
+                    return;
+                }
+                if (this.visible) {
                     this.hide();
+                } else {
+                    this.show();
                 }
             }
 
