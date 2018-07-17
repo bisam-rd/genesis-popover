@@ -5,101 +5,121 @@
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
 
 <dom-module id="demo-element">
-  <template>
-    <style>
-      :host {
-        font-family: sans-serif;
-      }
+    <template>
+        <style>
+            :host {
+                font-family: sans-serif;
+            }
 
-      .wider {
-        --genesis-popover-max-width:500px;
-      }
-      vaadin-grid {
-        width: 500px;
-      }
-    </style>
+            .wider {
+                --genesis-popover-max-width: 500px;
+            }
 
-    <h2>Genesis-Popover Example</h2>
+            vaadin-grid {
+                width: 500px;
+            }
+        </style>
 
-      This first example consists in a button toggling a simple popover when clicked
-       <genesis-popover placement="top">
-         <input type="button" value="Pop with popper" />
-         <div slot="content">Adrienne is Rocky's soul mate</div>
-       </genesis-popover>
+        <h2>Genesis-Popover Example</h2>
 
-	<hr/>
+        This first example consists in a button toggling a simple popover when clicked
+        <genesis-popover placement="top">
+            <input type="button" value="Pop with popper"/>
+            <div slot="content">Adrienne is Rocky's soul mate</div>
+        </genesis-popover>
 
-      Another popover with default content
-      <genesis-popover placement="right" id="danyskays">
-         <input type="button" value="Pop another one"/>
-         <div slot="content">Leo is the king of the jungle</div>
-       </genesis-popover>
-       <br/><br/>
-      <input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" on-click="update">
+        <hr/>
+
+        Another popover with default content
+        <genesis-popover placement="right" id="danyskays">
+            <input type="button" value="Pop another one"/>
+            <div slot="content">Leo is the king of the jungle</div>
+        </genesis-popover>
+        <br/><br/>
+        <input type="button" value="Click Me to fire an opening on the button 'Pop Another One'" on-click="update">
 
 
-       <hr/>
-            Placement on the left
-            <genesis-popover placement="left" >
-               <input type="button" value="Pop another one"/>
-               <div slot="content">Indeed he is</div>
-             </genesis-popover>
+        <hr/>
+        Placement on the left
+        <genesis-popover placement="left">
+            <input type="button" value="Pop another one"/>
+            <div slot="content">Indeed he is</div>
+        </genesis-popover>
 
-	<hr/>
-      Another popover with a vaadin grid as html content
-      <genesis-popover class="wider">
-         <input type="button" value="Pop another one"/>
-         <div slot="content">
-           <dom-bind>
-            <template>
-              <!-- Fetch an array of users to be shown in the grid -->
-              <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json" last-response="{{users}}"></iron-ajax>
+        <hr/>
+        Another popover with a vaadin grid as html content
+        <genesis-popover class="wider">
+            <input type="button" value="Pop another one"/>
+            <div slot="content">
+                <dom-bind>
+                    <template>
+                        <!-- Fetch an array of users to be shown in the grid -->
+                        <iron-ajax auto url="https://demo.vaadin.com/demo-data/1.0/people?count=200" handle-as="json"
+                                   last-response="{{users}}"></iron-ajax>
 
-              <!-- The array is set as the <vaadin-grid>'s "items" property -->
-              <vaadin-grid aria-label="Basic Binding Example" items="[[users.result]]">
+                        <!-- The array is set as the <vaadin-grid>'s "items" property -->
+                        <vaadin-grid aria-label="Basic Binding Example" items="[[users.result]]">
 
-                <vaadin-grid-column width="60px" flex-grow="0">
-                  <template class="header">#</template>
-                  <template>[[index]]</template>
-                  <!-- If necessary, the footer could be set using <template class="footer"> -->
-                  <template class="footer">#</template>
-                </vaadin-grid-column>
+                            <vaadin-grid-column width="60px" flex-grow="0">
+                                <template class="header">#</template>
+                                <template>[[index]]</template>
+                                <!-- If necessary, the footer could be set using <template class="footer"> -->
+                                <template class="footer">#</template>
+                            </vaadin-grid-column>
 
-                <vaadin-grid-column>
-                  <template class="header">First Name</template>
-                  <template>[[item.firstName]]</template>
-                  <template class="footer">First Name</template>
-                </vaadin-grid-column>
+                            <vaadin-grid-column>
+                                <template class="header">First Name</template>
+                                <template>[[item.firstName]]</template>
+                                <template class="footer">First Name</template>
+                            </vaadin-grid-column>
 
-                <vaadin-grid-column>
-                  <template class="header">Last Name</template>
-                  <template>[[item.lastName]]</template>
-                  <template class="footer">Last Name</template>
-                </vaadin-grid-column>
+                            <vaadin-grid-column>
+                                <template class="header">Last Name</template>
+                                <template>[[item.lastName]]</template>
+                                <template class="footer">Last Name</template>
+                            </vaadin-grid-column>
 
-                <vaadin-grid-column width="8em">
-                  <template class="header">Address</template>
-                  <template>
-                    <div style="white-space: normal">[[item.address.street]], [[item.address.city]]</div>
-                  </template>
-                  <template class="footer">Address</template>
-                </vaadin-grid-column>
+                            <vaadin-grid-column width="8em">
+                                <template class="header">Address</template>
+                                <template>
+                                    <div style="white-space: normal">[[item.address.street]], [[item.address.city]]
+                                    </div>
+                                </template>
+                                <template class="footer">Address</template>
+                            </vaadin-grid-column>
 
-              </vaadin-grid>
-            </template>
-          </dom-bind>
-        </div>
-       </genesis-popover>
+                        </vaadin-grid>
+                    </template>
+                </dom-bind>
+            </div>
+        </genesis-popover>
 
-  </template>
+        <hr/>
 
-  <script>
-    class DemoElement extends Polymer.Element {
-      static get is() { return 'demo-element' }
-      update(){
-        this.$.danyskays.setAttribute('pressed','true');
-      }
-    }
-    customElements.define(DemoElement.is, DemoElement);
+        No event
+        <genesis-popover id="noPop" placement="left" manual-show>
+            <input type="button" value="I will not pop"/>
+            <div slot="content">I will never pop</div>
+        </genesis-popover>
+
+        <input type="button" value="Pop the no-pop" on-click="popNoPop"/>
+    </template>
+
+    <script>
+        class DemoElement extends Polymer.Element {
+            static get is() {
+                return 'demo-element'
+            }
+
+            update() {
+                this.$.danyskays.setAttribute('pressed', 'true');
+            }
+
+            popNoPop() {
+                this.$.noPop.show();
+            }
+        }
+
+        customElements.define(DemoElement.is, DemoElement);
     </script>
 </dom-module>

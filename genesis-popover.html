@@ -4,168 +4,189 @@
 
 <dom-module id="genesis-popover">
 
-  <template>
+    <template>
 
-    <style>
-      /* shadow DOM styles go here */
+        <style>
+            /* shadow DOM styles go here */
 
-      :host {
-        --genesis-popover-max-width:300px;
-        --genesis-popover-min-height:10px;
-        --genesis-popover-margin:15px;
-        --genesis-popover-z-index:10000;
-      }
+            :host {
+                --genesis-popover-max-width: 300px;
+                --genesis-popover-min-height: 10px;
+                --genesis-popover-margin: 15px;
+                --genesis-popover-z-index: 10000;
+            }
 
-      .popper {
-        background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
-        border-radius: var(--lumo-border-radius);
-        box-shadow: 0 0 0 1px var(--lumo-contrast-10pct), var(--lumo-box-shadow-l);
-        font-family: var(--lumo-font-family);
-        font-size: var(--lumo-font-size-m);
-        font-weight: 400;
-        line-height: var(--lumo-line-height-s);
-        letter-spacing: 0;
-        text-transform: none;
-        -webkit-text-size-adjust: 100%;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+            .popper {
+                background: var(--lumo-base-color) linear-gradient(var(--lumo-contrast-5pct), var(--lumo-contrast-5pct));
+                border-radius: var(--lumo-border-radius);
+                box-shadow: 0 0 0 1px var(--lumo-contrast-10pct), var(--lumo-box-shadow-l);
+                font-family: var(--lumo-font-family);
+                font-size: var(--lumo-font-size-m);
+                font-weight: 400;
+                line-height: var(--lumo-line-height-s);
+                letter-spacing: 0;
+                text-transform: none;
+                -webkit-text-size-adjust: 100%;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
 
-        padding: var(--lumo-space-wide-l);
-        max-width: var(--genesis-popover-max-width);
-        min-height: var(--genesis-popover-min-height);
-        z-index: var(--genesis-popover-z-index);
-      }
+                padding: var(--lumo-space-wide-l);
+                max-width: var(--genesis-popover-max-width);
+                min-height: var(--genesis-popover-min-height);
+                z-index: var(--genesis-popover-z-index);
+            }
 
-      .popper[x-placement^="bottom"] {
-          margin-top: var(--genesis-popover-margin);
-      }
+            .popper[x-placement^="bottom"] {
+                margin-top: var(--genesis-popover-margin);
+            }
 
-      .popper[x-placement^="top"] {
-          margin-bottom: var(--genesis-popover-margin);
-      }
+            .popper[x-placement^="top"] {
+                margin-bottom: var(--genesis-popover-margin);
+            }
 
-      .popper[x-placement^="right"] {
-          margin-left: var(--genesis-popover-margin);
-      }
+            .popper[x-placement^="right"] {
+                margin-left: var(--genesis-popover-margin);
+            }
 
-      .popper[x-placement^="left"] {
-          margin-right: var(--genesis-popover-margin);
-      }
+            .popper[x-placement^="left"] {
+                margin-right: var(--genesis-popover-margin);
+            }
 
-      .popper-visible {
-        display: flex;
-      }
+            .popper-visible {
+                display: flex;
+            }
 
-      .popper-hidden {
-        display: none;
-      }
+            .popper-hidden {
+                display: none;
+            }
 
-    </style>
+        </style>
 
-    <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="togglePopper">
+        <!-- shadow DOM goes here -->
+        <span id="popoverEmitter" on-click="onClickEmitter">
          <slot></slot>
        </span>
 
-      <div id="popoverContent" class$="[[popperClass]]" on-click="togglePopper">
-        <slot name="content"></slot>
-      </div>
+        <div id="popoverContent" class$="[[popperClass]]">
+            <slot name="content"></slot>
+        </div>
 
-  </template>
+    </template>
 
-  <script>
-    class GenesisPopover extends Polymer.Element {
-      static get is() {
-        return 'genesis-popover';
-      }
-      static get properties() {
-        return {
-          pressed: {
-            type: Boolean,
-            reflectToAttribute: true,
-            value: false,
-            notify: true,
-            observer: '_pressedChanged'
-          },
-          placement: {
-            type: String,
-            value: 'bottom',
-            reflectToAttribute: true
-          },
-          popperClass: {
-            type: String,
-            value: 'popper popper-hidden'
-          }
-        }
-      }
+    <script>
+        class GenesisPopover extends Polymer.Element {
+            static get is() {
+                return 'genesis-popover';
+            }
 
-      constructor() {
-        super();
-      }
-
-      ready(){
-        super.ready();
-        this.popperInstance = new Popper(
-                this.$.popoverEmitter,
-                this.$.popoverContent,
-                {
-                  placement: this.placement,
-                  modifiers: {
-                    preventOverflow: {
-                      boundariesElement: 'viewport',
+            static get properties() {
+                return {
+                    pressed: {
+                        type: Boolean,
+                        reflectToAttribute: true,
+                        value: false,
+                        notify: true,
+                        observer: '_pressedChanged'
                     },
-                  },
+                    placement: {
+                        type: String,
+                        value: 'bottom',
+                        reflectToAttribute: true
+                    },
+                    popperClass: {
+                        type: String,
+                        value: 'popper popper-hidden',
+                    },
+                    manualShow: {
+                        type: Boolean,
+                        reflectToAttribute: true,
+                        value: false,
+                    }
                 }
-            );
-        if(this.pressed) {
-          this.showPopper();
+            }
+
+            ready() {
+                super.ready();
+                this.popperInstance = new Popper(
+                    this.$.popoverEmitter,
+                    this.$.popoverContent,
+                    {
+                        placement: this.placement,
+                        modifiers: {
+                            preventOverflow: {
+                                boundariesElement: 'viewport',
+                            },
+                        },
+                    }
+                );
+                if (this.pressed) {
+                    this.show();
+                }
+            }
+
+            _pressedChanged(newValue, oldValue) {
+                if (newValue && this.popperInstance != null) {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            }
+
+            constructor() {
+                super();
+                this._onClickOutside = this._onClickOutside.bind(this);
+                this._onEscape = this._onEscape.bind(this);
+            }
+
+            _isOutside(x, y, rect) {
+                return x < rect.left
+                    || x > rect.right
+                    || y < rect.top
+                    || y > rect.bottom;
+            };
+
+            _onClickOutside(event) {
+                var contentRect = this.$.popoverContent.getBoundingClientRect();
+                var emitterRect = this.$.popoverEmitter.getBoundingClientRect();
+                if (this._isOutside(event.clientX, event.clientY, contentRect)
+                    && this._isOutside(event.clientX, event.clientY, emitterRect)) {
+                    this.hide();
+                }
+            };
+
+            _onEscape(event) {
+                if (event.key === 'Escape') {
+                    this.hide();
+                }
+            }
+
+            onClickEmitter() {
+                if (!this.pressed && !this.manualShow) {
+                    this.show();
+                } else if (this.pressed) {
+                    this.hide();
+                }
+            }
+
+            show() {
+                this.popperInstance.scheduleUpdate();
+                this.popperClass = "popper popper-visible";
+                this.pressed = true;
+
+                document.addEventListener("click", this._onClickOutside, true);
+                document.addEventListener("keydown", this._onEscape, true);
+            }
+
+            hide() {
+                document.removeEventListener("click", this._onClickOutside, true);
+                document.removeEventListener("keydown", this._onEscape, true);
+
+                this.popperClass = "popper popper-hidden";
+                this.pressed = false;
+            }
         }
-      }
 
-    _pressedChanged(newValue, oldValue) {
-        if(newValue && this.popperInstance!=null) {
-          this.showPopper();
-        } else {
-          this.popperClass="popper popper-hidden";
-        }
-      }
-
-      togglePopper() {
-        this.pressed = !this.pressed;
-      }
-
-      showPopper(){
-        this.popperInstance.scheduleUpdate();
-        this.popperClass="popper popper-visible";
-
-          var that=this;
-
-          document.addEventListener("click", windowClick, true);
-          function windowClick(event) {
-              var emitterRect=that.$.popoverEmitter.getBoundingClientRect();
-              document.removeEventListener("click", windowClick, true);
-              document.removeEventListener("keydown", windowKeyDown, true);
-              if(event.clientX<emitterRect.left
-                 || event.clientX>emitterRect.right
-                 || event.clientY<emitterRect.top
-                 || event.clientY>emitterRect.bottom)
-                 {
-                   that.togglePopper();
-                 }
-              }
-
-          document.addEventListener('keydown', windowKeyDown, true);
-          function windowKeyDown(event) {
-              if(event.key==='Escape') {
-                document.removeEventListener("keydown", windowKeyDown, true);
-                document.removeEventListener("click", windowClick, true);
-                that.togglePopper();
-              }
-          }
-      }
-
-    }
-    customElements.define(GenesisPopover.is, GenesisPopover);
-  </script>
+        customElements.define(GenesisPopover.is, GenesisPopover);
+    </script>
 
 </dom-module>
