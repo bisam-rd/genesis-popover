@@ -6,10 +6,10 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "demo",
+    "demo-lumo",
+    "test"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
