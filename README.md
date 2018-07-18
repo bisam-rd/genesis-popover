@@ -33,3 +33,9 @@ $ polymer test -l chrome
 ```
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+
+## WARNING
+
+The vaadin flow-maven-plugin has a bug preventing the packaging of popper.js. (https://github.com/vaadin/flow/issues/4415).
+
+We have brutally copied the popper.js minified file in the meantime.
