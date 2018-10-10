@@ -107,10 +107,10 @@
         super.ready();
 
         this.$.popoverContent.addEventListener('click', event => {
-            if(this.containsAsChild(event.target)){
-              this.togglePopper();
-            }
-          });
+          if(this.containsAsChild(event.target)){
+            this.togglePopper();
+          }
+        });
 
         this.popperInstance = new Popper(
                 this.$.popoverEmitter,
@@ -144,7 +144,6 @@
           document.removeEventListener("keydown", this.windowKeyDownHandler, true);
         }
       }
-
 
       containsAsChild(element){
 
