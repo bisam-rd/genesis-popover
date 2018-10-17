@@ -13,7 +13,7 @@
       :host {
         --genesis-popover-max-width:300px;
         --genesis-popover-min-height:10px;
-        --genesis-popover-margin:10px;
+        --genesis-popover-margin:0px;
         --genesis-popover-z-index:10000;
       }
 
@@ -61,10 +61,16 @@
         display: none;
       }
 
+
+      .flexComponent {
+        display: flex;
+        flex: 1;
+      }
+
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="togglePopper">
+       <span id="popoverEmitter" on-click="togglePopper" class="flexComponent">
          <slot></slot>
        </span>
 
