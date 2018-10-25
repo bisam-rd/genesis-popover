@@ -2,7 +2,6 @@
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="popperjs-import.html">
 
-
 <dom-module id="genesis-popover">
 
   <template>
@@ -13,7 +12,7 @@
       :host {
         --genesis-popover-max-width:300px;
         --genesis-popover-min-height:10px;
-        --genesis-popover-margin:0px;
+        --genesis-popover-margin:10px;
         --genesis-popover-z-index:10000;
       }
 
@@ -62,15 +61,14 @@
       }
 
 
-      .flexComponent {
-        display: flex;
-        flex: 1;
+      .flex-component-mixin {        
+        @apply --flex-display-mixin;
       }
 
     </style>
 
     <!-- shadow DOM goes here -->
-       <span id="popoverEmitter" on-click="togglePopper" class="flexComponent">
+       <span id="popoverEmitter" on-click="togglePopper" class="flex-component-mixin">
          <slot></slot>
        </span>
 
@@ -194,7 +192,7 @@
       }
 
     }
-    customElements.define(GenesisPopover.is, GenesisPopover);
+    window.customElements.define(GenesisPopover.is, GenesisPopover);
   </script>
 
 </dom-module>

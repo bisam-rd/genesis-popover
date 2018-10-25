@@ -13,6 +13,10 @@
     <link rel="import" href="../genesis-popover.html">
     <link rel="import" href="../../vaadin-grid/vaadin-grid.html">
     <link rel="import" href="../../iron-ajax/iron-ajax.html">
+    <link rel="import" href="../../vaadin-dialog/vaadin-dialog.html">
+    <link rel="import" href="../../vaadin-button/vaadin-button.html">
+    <link rel="import" href="../../vaadin-text-field/vaadin-text-field.html">
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -53,11 +57,31 @@
           <h3>Genesis-Popover Example already displayed</h3>
           <demo-snippet>
             <p>This popper has pressed attribute so it is displayed by default</p>
+            <br>
             <template>
-              <genesis-popover placement="top" pressed>
-                <div slot="content">Adrienne is Rocky's soul mate</div>
-              </genesis-popover>
+                <genesis-popover placement="right" pressed>
+                  <i class="em em-boxing_glove"></i>
+                  <div slot="content">Adrian is Rocky's soul mate</div>
+                </genesis-popover>
             </template>
+          </demo-snippet>
+        
+          <h3>Genesis-Popover inside a vaadin dialog</h3>
+          <demo-snippet>
+              <p>This popper is displayed into a vaadin-dialog</p>
+              <vaadin-button onclick="document.getElementById('myDialog').setAttribute('opened',false); document.getElementById('myDialog').setAttribute('opened',true);">Open a Dialog</vaadin-button>
+              <vaadin-dialog id="myDialog">
+                  <template>
+                    <div>
+                        <genesis-popover placement="bottom-start">
+                            <vaadin-text-field></vaadin-text-field>
+                            <div slot="content">Adrian is Rocky's soul mate</div>
+                          </genesis-popover>
+                    </div>
+                      
+                    <div><vaadin-text-field></vaadin-text-field></div>
+                  </template>
+              </vaadin-dialog>
           </demo-snippet>
 
 
