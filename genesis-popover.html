@@ -136,7 +136,7 @@
             this._pressedChanged(this.pressed);
       }
 
-    _pressedChanged(newValue) {
+    _pressedChanged(newValue, oldValue) {
       if(this.setUpDone)
       {
         if(newValue) {
@@ -165,7 +165,7 @@
           this.popperClass="popper popper-hidden";
           if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
           if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
-          this.dispatchEvent(new CustomEvent('popper-closed', { closed: true}));
+          if(oldValue) this.dispatchEvent(new CustomEvent('popper-closed', { closed: true}));
         }
       }
         
