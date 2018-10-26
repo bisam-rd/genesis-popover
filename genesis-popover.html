@@ -111,12 +111,6 @@
       ready(){
         super.ready();
 
-        this.$.popoverContent.addEventListener('click', event => {
-          if(this.containsAsChild(event.target)){
-            this.togglePopper();
-          }
-        });
-
         this.popperInstance = new Popper(
                 this.$.popoverEmitter,
                 this.$.popoverContent,
@@ -148,7 +142,9 @@
 
           document.addEventListener("click", windowClick, true);
           function windowClick(event) {
-              that.togglePopper();
+              if(!that.containsAsChild(event.target)){
+                that.togglePopper();
+              }
           }
 
           document.addEventListener('keydown', windowKeyDown, true);
@@ -169,6 +165,10 @@
         }
       }
         
+      }
+
+      reopenPopper(){
+        this.pressed = true;
       }
 
       togglePopper() {
