@@ -143,6 +143,7 @@
           
           this.popperInstance.scheduleUpdate();
           this.popperClass="popper popper-visible";
+
           var that=this;
 
           document.addEventListener("click", windowClick, true);
@@ -164,6 +165,7 @@
           this.popperClass="popper popper-hidden";
           if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
           if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
+          this.dispatchEvent(new CustomEvent('popper-closed', { closed: true}));
         }
       }
         
