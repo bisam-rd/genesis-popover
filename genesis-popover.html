@@ -61,7 +61,7 @@
       }
 
 
-      .flex-component-mixin {        
+      .flex-component-mixin {
         @apply --flex-display-mixin;
       }
 
@@ -100,6 +100,10 @@
           popperClass: {
             type: String,
             value: 'popper popper-hidden'
+          },
+          ignore_auto_close: {
+            type: Boolean,
+            value: false
           }
         }
       }
@@ -134,46 +138,42 @@
       if(this.setUpDone)
       {
         if(newValue) {
-          
+
           this.popperInstance.scheduleUpdate();
           this.popperClass="popper popper-visible";
 
           var that=this;
 
-          document.addEventListener("click", windowClick, true);
-          function windowClick(event) {
-<<<<<<< HEAD
-            if(!event.target.closest("div[slot='content']"))
-            {
-              that.togglePopper();
+          if(this.ignore_auto_close===false)
+          {
+
+            document.addEventListener("click", windowClick, true);
+            function windowClick(event) {
+              if(!event.target.closest("genesis-popover"))
+              {
+                that.togglePopper();
+              }
             }
-              //if(!that.containsAsChild(event.target)){
-              //}
-=======
-              if(!that.containsAsChild(event.target)){
-                that.togglePopper();
-              }
->>>>>>> 9ce14a4321ae674a55650bd3fbdeba8d453461cf
-          }
 
-          document.addEventListener('keydown', windowKeyDown, true);
-          function windowKeyDown(event) {
-              if(event.key==='Escape') {
-                that.togglePopper();
-              }
-          }
+            document.addEventListener('keydown', windowKeyDown, true);
+            function windowKeyDown(event) {
+                if(event.key==='Escape') {
+                  that.togglePopper();
+                }
+            }
 
-          this.windowClickHandler=windowClick;
-          this.windowKeyDownHandler=windowKeyDown;
+            this.windowClickHandler=windowClick;
+            this.windowKeyDownHandler=windowKeyDown;
+          }
 
         } else {
           this.popperClass="popper popper-hidden";
           if(this.windowClickHandler) document.removeEventListener("click", this.windowClickHandler, true);
           if(this.windowKeyDownHandler) document.removeEventListener("keydown", this.windowKeyDownHandler, true);
-          if(oldValue) this.dispatchEvent(new CustomEvent('popper-closed', { closed: true}));
+          if(oldValue) this.dispatchEvent(new CustomEvent('popper-closed', { closed: true }));
         }
       }
-        
+
       }
 
       reopenPopper(){
@@ -188,17 +188,17 @@
 
         if(element===this.$.popoverContent) return true;
         let slottedNodes = this.shadowRoot.querySelector('slot[name="content"]').assignedNodes();
-        
+
         for (let node of slottedNodes)
         {
           if(element===node) return true;
 
           for(let child of Array.from(node.querySelectorAll("*")))
           {
-            if(element===child) return true;  
+            if(element===child) return true;
           }
         }
-      
+
         return false;
       }
 
