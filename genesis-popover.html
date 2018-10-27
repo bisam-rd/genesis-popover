@@ -122,8 +122,10 @@
         }
       }
 
-      togglePopper() {
-        this.pressed = !this.pressed;
+      togglePopper(event) {
+        if(!event || !event.target.getAttribute('popover-ignore')){
+          this.pressed = !this.pressed;
+        }
       }
 
        __scheduleUpdatePopperPosition(){
