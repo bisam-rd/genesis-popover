@@ -156,8 +156,9 @@
         if(!this.ignore_auto_close)
         {
           document.addEventListener("click", windowClick, true);
+          var that=this;
           function windowClick(event) {
-            if(!event.target.closest("genesis-popover"))
+            if(that!==event.target.closest("genesis-popover"))
             {
               that.togglePopper();
             }
